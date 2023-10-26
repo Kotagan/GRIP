@@ -54,14 +54,13 @@ def generate_origin_data(file_path_list):
 			T is the temporal length of the data. history_frames + future_frames
 			V is the maximum number of objects. zero-padding for less objects.
 	'''
-	frame_list = []
+
+	result = np.array([])
 	for file_path in file_path_list:
 		now_list = get_origin_data_list(file_path)
-		frame_list.append(now_list)
+		result = np.array(now_list)
 
-	save_path = './data/prediction_test/frame.txt'
-	with open(save_path, 'wb') as writer:
-		pickle.dump([frame_list], writer)
+	pd.DataFrame(result).to_csv('sample.csv', sep=' ', index=False, header=False)
 
 
 if __name__ == '__main__':
