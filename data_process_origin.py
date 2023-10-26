@@ -60,7 +60,7 @@ def generate_origin_data(file_path_list):
 		now_list = get_origin_data_list(file_path)
 		result = np.array(now_list)
 
-	pd.DataFrame(result).to_csv('sample.csv', sep=' ', index=False, header=False)
+	pd.DataFrame(result).to_csv('./data/prediction_train/frame.txt', sep=' ', index=False, header=False)
 
 
 if __name__ == '__main__':
