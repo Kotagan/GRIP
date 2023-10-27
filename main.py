@@ -10,7 +10,7 @@ from datetime import datetime
 import random
 import itertools
 
-CUDA_VISIBLE_DEVICES='1'
+CUDA_VISIBLE_DEVICES='0'
 os.environ["CUDA_VISIBLE_DEVICES"] = CUDA_VISIBLE_DEVICES
 
 def seed_torch(seed=0):
@@ -357,7 +357,7 @@ if __name__ == '__main__':
 	
 	# pretrained_model_path = './trained_models/model_epoch_0016.pt'
 	# model = my_load_model(model, pretrained_model_path)
-	# run_test(model, './test_data.pkl')
+	run_test(model, './test_data.pkl')
 	
 		
 		

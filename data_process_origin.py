@@ -60,7 +60,12 @@ def generate_origin_data(file_path_list):
 		now_list = get_origin_data_list(file_path)
 		result = np.array(now_list)
 
-	pd.DataFrame(result).to_csv('./data/prediction_train/frame.txt', sep=' ', index=False, header=False)
+	all_data_list_length = int(len(result) * 0.8)
+	train_list = result[:all_data_list_length]
+	test_list = result[all_data_list_length:]
+
+	pd.DataFrame(train_list).to_csv('./data/prediction_train/frame.txt', sep=' ', index=False, header=False)
+	pd.DataFrame(test_list).to_csv('./data/prediction_test/frame.txt', sep=' ', index=False, header=False)
 
 
 if __name__ == '__main__':
