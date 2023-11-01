@@ -35,6 +35,9 @@ def get_frame_instance_dict(pra_file_path):
         # print(train_file_path)
         content = np.array([x.strip().split(' ') for x in reader.readlines()]).astype(float)
         now_dict = {}
+        id_dict = {}
+        for row in content:
+            id_dict[row[0]] = 0
         for row in content:
             # instance = {row[1]:row[2:]}
             n_dict = now_dict.get(row[0], {})
@@ -46,6 +49,7 @@ def get_frame_instance_dict(pra_file_path):
 
 
 def process_data(pra_now_dict, pra_start_ind, pra_end_ind, pra_observed_last):
+
     visible_object_id_list = list(
         pra_now_dict[pra_observed_last].keys())  # object_id appears at the last observed frame
     num_visible_object = len(visible_object_id_list)  # number of current observed objects
@@ -116,6 +120,8 @@ def generate_train_data(pra_file_path):
         start_ind = int(start_ind)
         end_ind = int(start_ind + total_frames)
         observed_last = start_ind + history_frames - 1
+        if observed_last == 6022368296:
+            continue
         object_frame_feature, neighbor_matrix, mean_xy = process_data(now_dict, start_ind, end_ind, observed_last)
 
         all_feature_list.append(object_frame_feature)
