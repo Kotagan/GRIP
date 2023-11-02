@@ -142,11 +142,12 @@ def generate_test_data(pra_file_path):
     all_adjacency_list = []
     all_mean_list = []
     # get all start frame id
-    start_frame_id_list = frame_id_set[::history_frames]
+    start_frame_id_list = frame_id_set[:-history_frames]
     for start_ind in start_frame_id_list:
         start_ind = int(start_ind)
         end_ind = int(start_ind + history_frames)
         observed_last = start_ind + history_frames - 1
+
         # print(start_ind, end_ind)
         object_frame_feature, neighbor_matrix, mean_xy = process_data(now_dict, start_ind, end_ind, observed_last)
 
