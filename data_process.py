@@ -32,7 +32,7 @@ def get_frame_instance_dict(pra_file_path):
 		}
 	"""
     with open(pra_file_path, 'r') as reader:
-        # print(train_file_path)
+        print(pra_file_path)
         content = np.array([x.strip().split(' ') for x in reader.readlines()]).astype(float)
         now_dict = {}
         id_dict = {}
@@ -120,8 +120,6 @@ def generate_train_data(pra_file_path):
         start_ind = int(start_ind)
         end_ind = int(start_ind + total_frames)
         observed_last = start_ind + history_frames - 1
-        if observed_last == 6022368296:
-            continue
         object_frame_feature, neighbor_matrix, mean_xy = process_data(now_dict, start_ind, end_ind, observed_last)
 
         all_feature_list.append(object_frame_feature)
@@ -185,7 +183,7 @@ def generate_data(pra_file_path_list, pra_is_train=True):
     # Test (N, C, T, V)=(415, 11, 6, 70), (415, 70, 70), (415, 2)
     print(np.shape(all_data), np.shape(all_adjacency), np.shape(all_mean_xy))
 
-    # save training_data and trainjing_adjacency into a file.
+    # save training_data and training_adjacency into a file.
     if pra_is_train:
         save_path = 'train_data.pkl'
     else:
