@@ -20,7 +20,6 @@ object_width = 7
 object_height = 8
 heading = 9
 
-
 def get_origin_data_list(pra_file_path):
     '''
     Read raw data from files and return a dictionary:
