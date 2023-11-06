@@ -6,13 +6,17 @@
   <component name="ChangeListManager">
     <list default="true" id="5c14f1db-e8dc-49aa-9033-5296e254c522" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/data_process.py" beforeDir="false" afterPath="$PROJECT_DIR$/data_process.py" afterDir="false" />
+<<<<<<< HEAD
       <change beforePath="$PROJECT_DIR$/data_process_origin.py" beforeDir="false" afterPath="$PROJECT_DIR$/data_process_origin.py" afterDir="false" />
+=======
+>>>>>>> 5c4647045af7f08bf65cebffa2e3f76d575e51d2
       <change beforePath="$PROJECT_DIR$/trained_models/model_epoch_0000.pt" beforeDir="false" afterPath="$PROJECT_DIR$/trained_models/model_epoch_0000.pt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/trained_models/model_epoch_0001.pt" beforeDir="false" afterPath="$PROJECT_DIR$/trained_models/model_epoch_0001.pt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/trained_models/model_epoch_0002.pt" beforeDir="false" afterPath="$PROJECT_DIR$/trained_models/model_epoch_0002.pt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/trained_models/model_epoch_0003.pt" beforeDir="false" afterPath="$PROJECT_DIR$/trained_models/model_epoch_0003.pt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/trained_models/model_epoch_0004.pt" beforeDir="false" afterPath="$PROJECT_DIR$/trained_models/model_epoch_0004.pt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/trained_models/model_epoch_0005.pt" beforeDir="false" afterPath="$PROJECT_DIR$/trained_models/model_epoch_0005.pt" afterDir="false" />
+<<<<<<< HEAD
       <change beforePath="$PROJECT_DIR$/trained_models/model_epoch_0006.pt" beforeDir="false" afterPath="$PROJECT_DIR$/trained_models/model_epoch_0006.pt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/trained_models/model_epoch_0007.pt" beforeDir="false" afterPath="$PROJECT_DIR$/trained_models/model_epoch_0007.pt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/trained_models/model_epoch_0008.pt" beforeDir="false" afterPath="$PROJECT_DIR$/trained_models/model_epoch_0008.pt" afterDir="false" />
@@ -46,6 +50,8 @@
       <change beforePath="$PROJECT_DIR$/trained_models/model_epoch_0036.pt" beforeDir="false" afterPath="$PROJECT_DIR$/trained_models/model_epoch_0036.pt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/trained_models/model_epoch_0037.pt" beforeDir="false" afterPath="$PROJECT_DIR$/trained_models/model_epoch_0037.pt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/trained_models/model_epoch_0038.pt" beforeDir="false" afterPath="$PROJECT_DIR$/trained_models/model_epoch_0038.pt" afterDir="false" />
+=======
+>>>>>>> 5c4647045af7f08bf65cebffa2e3f76d575e51d2
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -188,6 +194,7 @@
       <breakpoints>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/data_process.py</url>
+<<<<<<< HEAD
           <line>150</line>
           <option name="timeStamp" value="34" />
         </line-breakpoint>
@@ -200,6 +207,15 @@
           <url>file://$PROJECT_DIR$/data_process_divide.py</url>
           <line>41</line>
           <option name="timeStamp" value="42" />
+=======
+          <line>144</line>
+          <option name="timeStamp" value="26" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/data_process.py</url>
+          <line>145</line>
+          <option name="timeStamp" value="27" />
+>>>>>>> 5c4647045af7f08bf65cebffa2e3f76d575e51d2
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>

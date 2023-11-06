@@ -79,7 +79,7 @@ def my_save_model(pra_model, pra_epoch):
 def my_load_model(pra_model, pra_path):
     checkpoint = torch.load(pra_path)
     pra_model.load_state_dict(checkpoint['xin_graph_seq2seq_model'])
-    print('Successfull loaded from {}'.format(pra_path))
+    print('Successfully loaded from {}'.format(pra_path))
     return pra_model
 
 
