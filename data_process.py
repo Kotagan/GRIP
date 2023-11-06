@@ -142,7 +142,7 @@ def generate_test_data(pra_file_path):
     all_adjacency_list = []
     all_mean_list = []
     # get all start frame id
-    start_frame_id_list = frame_id_set[::history_frames]
+    start_frame_id_list = frame_id_set[:-history_frames:history_frames]
     for start_ind in start_frame_id_list:
         start_ind = int(start_ind)
         end_ind = int(start_ind + history_frames)
