@@ -21,17 +21,18 @@ object_height = 8
 heading = 9
 
 def get_origin_data_list(pra_file_path):
-    '''
+    """
     Read raw data from files and return a dictionary:
         {frame_id:
             {object_id:
                 # 10 features
-                [frame_id, object_id, object_type, position_x, position_y, position_z, object_length, pbject_width, pbject_height, heading]
+                [frame_id, object_id, object_type, position_x, position_y, position_z, object_length,
+                object_width, object_height, heading]
             }
         }
-    '''
+    """
     frame_list = np.empty(shape=[0, 10])
-    content = np.array(pd.read_csv(pra_file_path, header=None).to_numpy()[:, [1, 0, 4, 20, 21, 22, 52, 54, 56, 50]])
+    content = np.array(pd.read_csv(pra_file_path, header=None).to_numpy()[:, [1, 0, 2, 20, 21, 22, 52, 54, 56, 50]])
     map_id = {}  # record object id
     map_list = {}  # record same data
     pair_list = {}  # record same frame + id
@@ -61,9 +62,15 @@ def get_origin_data_list(pra_file_path):
             continue
         pair_list[str(list[row[frame_id], row[object_id]])] = 0
 
-        row[position_x], row[position_y] = converter.transform(row[position_x] / 10000000, row[position_y] / 10000000)
+        row[position_x], row[position_y] = converter.transform(row[position_x] / 10000000,
+                                                               row[position_y] / 10000000)
         row[heading] = row[heading] / 36000 * math.pi
-        row[object_type] = 2
+        if row[object_type] == 1:
+            row[object_type] = 2
+        if row[object_type] == 2:
+            row[object_type] = 3
+        if not (row[object_type] == 1) and (row[object_type] == 2):
+            print('error')
 
         temp = row.reshape(-1, 10)
         frame_list = np.concatenate([frame_list, temp], 0)
@@ -71,7 +78,8 @@ def get_origin_data_list(pra_file_path):
     for row in frame_list:
         row[0] -= frame_list[0][0]
 
-    pd.DataFrame(frame_list).to_csv('./data/prediction_train/frame.txt', sep=' ', index=False, header=False)
+    pd.DataFrame(frame_list).to_csv('./data/prediction_train/frame.txt', sep=' ',
+                                    index=False, header=False)
     return
 
 

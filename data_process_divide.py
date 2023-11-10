@@ -26,7 +26,7 @@ def generate_origin_data(file_path):
             N is the number of training data
             C is the dimension of features, 10raw_feature + 1mark(valid data or not)
             T is the temporal length of the data. history_frames + future_frames
-            V is the maximum number of objects. zero-padding for less objects.
+            V is the maximum number of objects. zero-padding for fewer objects.
     """
 
     all_data_list = np.array(pd.read_table(file_path, sep=' ', header=None, index_col=False))
@@ -34,10 +34,15 @@ def generate_origin_data(file_path):
     frame_id_set = {}
     num = 0
     for row in all_data_list:
-        if not (int(row[0]) - 1 in frame_id_set or int(row[0]) in frame_id_set):
-            pd.DataFrame(data_list).to_csv('./data/prediction_train/' + str(num) + '.txt', sep=' ', index=False, header=False)
-            data_list = []
-            num += 1
+        if not (int(row[0]) - 1 in frame_id_set
+                or int(row[0]) in frame_id_set
+                or len(data_list) == 0):
+            if data_list[len(data_list) - 1][0] - data_list[0][0] < 12:
+                data_list = []
+            else:
+                pd.DataFrame(data_list).to_csv('./data/prediction_train/' + str(num) + '.txt', sep=' ', index=False, header=False)
+                data_list = []
+                num += 1
         data_list.append(row)
         frame_id_set[int(row[0])] = 0
     pd.DataFrame(data_list).to_csv('./data/prediction_train/' + str(num) + '.txt', sep=' ', index=False, header=False)
