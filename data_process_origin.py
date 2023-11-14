@@ -67,9 +67,9 @@ def get_origin_data_list(pra_file_path):
         row[heading] = row[heading] / 36000 * math.pi
         if row[object_type] == 1:
             row[object_type] = 2
-        if row[object_type] == 2:
+        elif row[object_type] == 2:
             row[object_type] = 3
-        if not (row[object_type] == 1) and (row[object_type] == 2):
+        else:
             print('error')
 
         temp = row.reshape(-1, 10)
