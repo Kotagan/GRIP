@@ -18,6 +18,7 @@ object_width = 7
 object_height = 8
 heading = 9
 
+
 def generate_origin_data(file_path):
     """
     Read data from $pra_file_path, and split data into clips with $total_frames length.

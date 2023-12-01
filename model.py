@@ -8,6 +8,7 @@ from layers.graph_conv_block import Graph_Conv_Block
 from layers.seq2seq import Seq2Seq, EncoderRNN
 import numpy as np 
 
+
 class Model(nn.Module):
 	def __init__(self, in_channels, graph_args, edge_importance_weighting, **kwargs):
 		super().__init__()
@@ -67,7 +68,7 @@ class Model(nn.Module):
 	def forward(self, pra_x, pra_A, pra_pred_length, pra_teacher_forcing_ratio=0, pra_teacher_location=None):
 		x = pra_x
 		
-		# forwad
+		# forward
 		for gcn, importance in zip(self.st_gcn_networks, self.edge_importance):
 			if type(gcn) is nn.BatchNorm2d:
 				x = gcn(x)
@@ -95,6 +96,8 @@ class Model(nn.Module):
 
 		return now_predict 
 
+
 if __name__ == '__main__':
-	model = Model(in_channels=3, pred_length=6, graph_args={}, edge_importance_weighting=True)
+	graph_args = {'max_hop': 2, 'num_node': 120}
+	model = Model(in_channels=4, graph_args=graph_args, edge_importance_weighting=True)
 	print(model)

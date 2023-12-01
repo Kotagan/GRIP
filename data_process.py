@@ -49,7 +49,6 @@ def get_frame_instance_dict(pra_file_path):
 
 
 def process_data(pra_now_dict, pra_start_ind, pra_end_ind, pra_observed_last):
-
     visible_object_id_list = list(
         pra_now_dict[pra_observed_last].keys())  # object_id appears at the last observed frame
     num_visible_object = len(visible_object_id_list)  # number of current observed objects
@@ -142,7 +141,9 @@ def generate_test_data(pra_file_path):
     all_adjacency_list = []
     all_mean_list = []
     # get all start frame id
-    start_frame_id_list = frame_id_set[:-history_frames:history_frames]
+    start_frame_id_list = frame_id_set[:-history_frames + 1:history_frames]
+    # if len(start_frame_id_list) < history_frames:
+    #     return all_feature_list, all_adjacency_list, all_mean_list
     for start_ind in start_frame_id_list:
         start_ind = int(start_ind)
         end_ind = int(start_ind + history_frames)
