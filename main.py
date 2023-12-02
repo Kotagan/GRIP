@@ -96,8 +96,8 @@ def data_loader(pra_path, pra_batch_size=128, pra_shuffle=False, pra_drop_last=F
 
 
 def preprocess_data(pra_data, pra_rescale_xy):
-    # pra_data: (N, C, T, V)
-    # C = 11: [frame_id, object_id, object_type, position_x, position_y, position_z, object_length, pbject_width, pbject_height, heading] + [mask]
+    # pra_data: (N, C, T, V) C = 11: [frame_id, object_id, object_type, position_x, position_y, position_z,
+    # object_length, pbject_width, pbject_height, heading] + [mask]
     feature_id = [3, 4, 9, 10]
     ori_data = pra_data[:, feature_id].detach()
     data = ori_data.detach().clone()
@@ -190,8 +190,8 @@ def val_model(pra_model, pra_data_loader):
     all_bike_num_list = []
     # train model using training data
     for iteration, (ori_data, A, _) in enumerate(pra_data_loader):
-        # data: (N, C, T, V)
-        # C = 11: [frame_id, object_id, object_type, position_x, position_y, position_z, object_length, pbject_width, pbject_height, heading] + [mask]
+        # data: (N, C, T, V) C = 11: [frame_id, object_id, object_type, position_x, position_y, position_z,
+        # object_length, pbject_width, pbject_height, heading] + [mask]
         data, no_norm_loc_data, _ = preprocess_data(ori_data, rescale_xy)
 
         for now_history_frames in range(6, 7):
@@ -249,7 +249,7 @@ def val_model(pra_model, pra_data_loader):
             human_x2y2 = human_x2y2.sum(axis=-1)
             all_human_sum_list.extend(human_x2y2)
 
-            ### bike dist
+            # bike dist
             bike_mask = (cat_mask == 4).float().to(dev)
             bike_mask = output_mask * bike_mask
             bike_sum_time, bike_num, bike_x2y2 = compute_RMSE(predicted, ori_output_loc_GT, bike_mask)
@@ -372,6 +372,6 @@ if __name__ == '__main__':
     # train and evaluate model
     run_trainval(model, pra_traindata_path='./train_data.pkl', pra_testdata_path='./test_data.pkl')
 
-    # pretrained_model_path = './trained_models/model_epoch_0016.pt'
-    # model = my_load_model(model, pretrained_model_path)
+    pretrained_model_path = './trained_models/model_epoch_0049.pt'
+    model = my_load_model(model, pretrained_model_path)
     run_test(model, './test_data.pkl')
