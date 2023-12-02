@@ -12,7 +12,7 @@ future_frames = 6  # 3 second * 2 frame/second
 total_frames = history_frames + future_frames
 # xy_range = 120 # max_x_range=121, max_y_range=118
 max_num_object = 120  # maximum number of observed objects is 70
-neighbor_distance = 10  # meter
+neighbor_distance = -1  # meter
 
 # Baidu ApolloScape data format: frame_id, object_id, object_type, position_x, position_y, position_z, object_length,
 # object_width, object_height, heading
@@ -180,8 +180,6 @@ def generate_data(pra_file_path_list, pra_is_train=True):
     all_adjacency = np.array(all_adjacency)  # (5010, 70, 70) Train
     all_mean_xy = np.array(all_mean_xy)  # (5010, 2) Train
 
-    # Train (N, C, T, V)=(5010, 11, 12, 70), (5010, 70, 70), (5010, 2)
-    # Test (N, C, T, V)=(415, 11, 6, 70), (415, 70, 70), (415, 2)
     print(np.shape(all_data), np.shape(all_adjacency), np.shape(all_mean_xy))
 
     # save training_data and training_adjacency into a file.

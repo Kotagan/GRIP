@@ -90,7 +90,7 @@ def data_loader(pra_path, pra_batch_size=128, pra_shuffle=False, pra_drop_last=F
         batch_size=pra_batch_size,
         shuffle=pra_shuffle,
         drop_last=pra_drop_last,
-        num_workers=0,
+        num_workers=10,
     )
     return loader
 
@@ -370,7 +370,7 @@ if __name__ == '__main__':
     model.to(dev)
 
     # train and evaluate model
-    run_trainval(model, pra_traindata_path='./train_data.pkl', pra_testdata_path='./test_data.pkl')
+    # run_trainval(model, pra_traindata_path='./train_data.pkl', pra_testdata_path='./test_data.pkl')
 
     # pretrained_model_path = './trained_models/model_epoch_0016.pt'
     # model = my_load_model(model, pretrained_model_path)
