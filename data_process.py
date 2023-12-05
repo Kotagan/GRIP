@@ -181,8 +181,6 @@ def generate_data(pra_file_path_list, pra_is_train=True):
     all_adjacency = np.array(all_adjacency)  # (5010, 70, 70) Train
     all_mean_xy = np.array(all_mean_xy)  # (5010, 2) Train
 
-    # Train (N, C, T, V)=(5010, 11, 12, 70), (5010, 70, 70), (5010, 2)
-    # Test (N, C, T, V)=(415, 11, 6, 70), (415, 70, 70), (415, 2)
     print(np.shape(all_data), np.shape(all_adjacency), np.shape(all_mean_xy))
 
     # save training_data and training_adjacency into a file.

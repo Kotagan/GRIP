@@ -58,19 +58,23 @@ def get_origin_data_list(pra_file_path):
         data_frame_id = int(round(row[frame_id] / 500, 0))
 
         # if pair(frame_id, object_id) exist, continue
-        if str(list[data_frame_id, row[object_id]]) in pair_list and compare_which_is_close(pair_list[list(data_frame_id, row[object_id])][frame_id], row[frame_id]):
+        if str(list[int(data_frame_id), int(row[object_id])]) in pair_list and compare_which_is_close(pair_list[list(data_frame_id, row[object_id])][frame_id], row[frame_id]):
             continue
         pair_list[str([data_frame_id, row[object_id]])] = row
 
     for index, key in enumerate(pair_list):
         row = pair_list[key]
         # millisecond → frame(2frame/second)
-        row[frame_id] = round(int(row[frame_id]) / 500)
+        row[frame_id] = int(round(int(row[frame_id]) / 500))
 
         row[position_x], row[position_y] = converter.transform(row[position_x] / 10000000,
                                                                row[position_y] / 10000000)
         # if row[position_y] <= -9724.29 or row[position_x] <= -79217.14:
         #     continue
+
+        row[object_width] = 1.7
+        row[object_length] = 4
+        row[object_height] = 1.5
 
         # data process
         row[heading] = row[heading] / 36000 * math.pi
