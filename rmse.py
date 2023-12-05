@@ -11,89 +11,52 @@ import random
 import itertools
 import math
 import pandas as pd
+import glob
 
+data_root = './data/'
+frame_id = 0
+object_id = 1
+object_type = 2
+position_x = 3
+position_y = 4
+position_z = 5
+object_length = 6
+object_width = 7
+object_height = 8
+heading = 9
 CUDA_VISIBLE_DEVICES = '0'
 os.environ["CUDA_VISIBLE_DEVICES"] = CUDA_VISIBLE_DEVICES
-
-
-def seed_torch(seed=0):
-    random.seed(seed)
-    os.environ['PYTHONHASHSEED'] = str(seed)
-    np.random.seed(seed)
-    torch.manual_seed(seed)
-    torch.cuda.manual_seed(seed)
-    torch.cuda.manual_seed_all(seed)  # if you are using multi-GPU.
-    torch.backends.cudnn.benchmark = False
-    torch.backends.cudnn.deterministic = True
-
-
-seed_torch()
 
 max_x = 1.
 max_y = 1.
 history_frames = 6  # 3 second * 2 frame/second
 future_frames = 6  # 3 second * 2 frame/second
 
-batch_size_train = 64
-batch_size_val = 32
-batch_size_test = 1
-total_epoch = 50
-base_lr = 0.01
-lr_decay_epoch = 5
-dev = 'cuda:0'
-work_dir = './trained_models'
-log_file = os.path.join(work_dir, 'log_test.txt')
 test_result_file = 'prediction_result.txt'
-
-criterion = torch.nn.SmoothL1Loss()
-
-if not os.path.exists(work_dir):
-    os.makedirs(work_dir)
-
-
-def my_print(pra_content):
-    with open(log_file, 'a') as writer:
-        print(pra_content)
-        writer.write(pra_content + '\n')
-
-
-def display_result(pra_results, pra_pref='Train_epoch'):
-    all_overall_sum_list, all_overall_num_list = pra_results
-    overall_sum_time = np.sum(all_overall_sum_list ** 0.5, axis=0)
-    overall_num_time = np.sum(all_overall_num_list, axis=0)
-    overall_loss_time = (overall_sum_time / overall_num_time)
-    overall_log = '|{}|[{}] All_All: {}'.format(datetime.now(), pra_pref, ' '.join(
-        ['{:.3f}'.format(x) for x in list(overall_loss_time) + [np.sum(overall_loss_time)]]))
-    my_print(overall_log)
-    return overall_loss_time
-
-
-def rmse_point(origin, predict):
-    """
-    :param origin: 原坐标
-    :param predict: 预测坐标
-    """
-    xy_sum = 0.0
-    for k in range(origin.shape[0]):
-        xy_sum += (origin[k][0] - predict[k][0]) * (origin[k][0] - predict[k][0]) +\
-                  (origin[k][1] - predict[k][1]) * (origin[k][1] - predict[k][1])
-
-    xy_sum /= origin.shape[0]
-    return math.sqrt(xy_sum)
-
+test_origin_data = 'data/frame.txt'
 
 if __name__ == '__main__':
-    look_back = 10
-    predict_data = np.array(pd.read_csv("./prediction_result.txt", sep=' '), dtype=np.float64)
-    origin_data = np.array(pd.read_csv("./data/frame.txt", sep=' '), dtype=np.float64)
-    dict_x = {}
-    for i in range(origin_data.shape[0]):
-        dict_x[str(origin_data[i][0]) + str(origin_data[i][1])] = [origin_data[i][8], origin_data[i][9]]
+    predict_data = np.array(pd.read_csv(test_result_file, sep=' ', header=None), dtype=np.float64)
 
-    predict_1s_rmse = rmse_point(d1s, p1s)
-    predict_3s_rmse = rmse_point(d3s, p3s)
-    predict_5s_rmse = rmse_point(d5s, p5s)
+    test_total_data = np.array(pd.read_csv(test_origin_data, sep=' ', header=None), dtype=np.float64)
+    origin_data_set = {}
+    for row in test_total_data:
+        origin_data_set[str(list[row[frame_id], row[object_id]])] = row
 
-    print('predict_1s_rmse =', predict_1s_rmse, '\n')
-    print('predict_3s_rmse =', predict_3s_rmse, '\n')
-    print('predict_5s_rmse =', predict_5s_rmse, '\n')
+    predict_data = predict_data.reshape(-1, 6, 5)
+    rmse_result = np.array([0.0, 0.0, 0.0, 0.0, 0.0, 0.0])
+    countn = 0
+    for i in range(predict_data.shape[0]):
+        for j in range(future_frames):
+            if not str(list[predict_data[i][j][frame_id], predict_data[i][j][object_id]]) in origin_data_set:
+                break
+        else:
+            countn += 1
+            for k in range(future_frames):
+                origin_data = origin_data_set[str(list[predict_data[i][k][frame_id], predict_data[i][k][object_id]])]
+                # print(((float(origin_data[position_x]) - (float(predict_data[i][k][position_x]))) * ((float(origin_data[position_y])) - (float(predict_data[i][k][position_y])))) ** 2)
+                rmse_result[k] += ((float(origin_data[position_x]) - (float(predict_data[i][k][position_x]))) * ((float(origin_data[position_y])) - (float(predict_data[i][k][position_y])))) ** 2
+
+    for j in range(future_frames):
+        rmse_result[j] = math.sqrt(rmse_result[j]/countn)
+    print(rmse_result)
