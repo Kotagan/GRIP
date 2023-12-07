@@ -73,8 +73,8 @@ def get_origin_data_list(pra_file_path):
 
         row[position_x], row[position_y] = converter.transform(row[position_x] / 10000000,
                                                                row[position_y] / 10000000)
-        if row[position_y] <= -9724.29 or row[position_x] <= -79217.14:
-            continue
+        # if row[position_y] <= -9724.29 or row[position_x] <= -79217.14:
+        #     continue
 
         row[object_width] = 1.7
         row[object_length] = 4
