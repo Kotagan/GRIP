@@ -53,8 +53,7 @@ if __name__ == '__main__':
         if not str(list[int(row[frame_id]), int(row[object_id])]) in origin_data_set:
             continue
         origin_data = origin_data_set[str(list[int(row[frame_id]), int(row[object_id])])]
-        rmse_result[id_map[row[frame_id]]] += ((float(origin_data[position_x]) - (float(row[position_x]))) *
-                                               ((float(origin_data[position_y])) - (float(row[position_y])))) ** 2
+        rmse_result[id_map[row[frame_id]]] += (float(origin_data[position_x]) - (float(row[position_x])))**2 + ((float(origin_data[position_y])) - (float(row[position_y]))) ** 2
         num_count[id_map[row[frame_id]]] += 1
 
     for j in range(future_frames):
