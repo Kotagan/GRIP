@@ -18,8 +18,8 @@ heading = 9
 speed = 10
 
 if __name__ == '__main__':
-    cross_data_list = np.array(pd.read_csv("./frame.txt", sep=' '), dtype=np.float64)
-    all_data_list = np.array(pd.read_csv("./frame_total.txt", sep=' '), dtype=np.float64)
+    cross_data_list = np.array(pd.read_csv("./frame_cross_data.txt", sep=' '), dtype=np.float64)
+    all_data_list = np.array(pd.read_csv("./frame_total_data.txt", sep=' '), dtype=np.float64)
     dict_x = {}
     for row in all_data_list:
         dict_x[str(list[int(row[frame_id]), int(row[object_id])])] = row
@@ -31,10 +31,12 @@ if __name__ == '__main__':
             predict_frame = int(row[frame_id] + j + 1)
             if not str(list[predict_frame, int(row[object_id])]) in dict_x:
                 continue
-            real_data = dict_x[str(list[predict_frame, int(row[object_id])])]
-            rmse_result[j] += ((row[position_x] - real_data[position_x]) ** 2 +
-                               (row[position_y] - real_data[position_y]) ** 2)
-            rmse_count_num += 1
+            predict_x_position = row[position_x] + 0.5 * row[speed] * math.cos(row[heading])
+            predict_y_position = row[position_y] + 0.5 * row[speed] * math.sin(row[heading])
+            real_x_position = dict_x[str(list[predict_frame, int(row[object_id])])][position_x]
+            real_y_position = dict_x[str(list[predict_frame, int(row[object_id])])][position_y]
+            rmse_result[j] += ((real_x_position - predict_x_position) ** 2 + (real_y_position - predict_y_position) ** 2)
+            rmse_count_num[j] += 1
 
     for j in range(6):
         rmse_result[j] = math.sqrt(rmse_result[j] / rmse_count_num[j])

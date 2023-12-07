@@ -45,16 +45,17 @@ if __name__ == '__main__':
 
     predict_data = predict_data.reshape(-1, 6, 5)
     rmse_result = np.array([0.0, 0.0, 0.0, 0.0, 0.0, 0.0])
-    countn = np.array([0.0, 0.0, 0.0, 0.0, 0.0, 0.0])
-    for i in range(predict_data.shape[0]):
-        for k in range(future_frames):
-            if not str(list[int(predict_data[i][k][frame_id]), predict_data[i][k][object_id]]) in origin_data_set:
-                continue
-            countn[k] += 1
-            origin_data = origin_data_set[str(list[int(predict_data[i][k][frame_id]), predict_data[i][k][object_id]])]
-            # print(((float(origin_data[position_x]) - (float(predict_data[i][k][position_x]))) * ((float(origin_data[position_y])) - (float(predict_data[i][k][position_y])))) ** 2)
-            rmse_result[k] += ((float(origin_data[position_x]) - (float(predict_data[i][k][position_x]))) * ((float(origin_data[position_y])) - (float(predict_data[i][k][position_y])))) ** 2
+    num_count = np.array([0.0, 0.0, 0.0, 0.0, 0.0, 0.0])
+    id_map = {}
+    for row in predict_data:
+        if not row[frame_id] in id_map:
+            for j in range(6):
+                id_map[row[frame_id] + j] = j
+        origin_data = origin_data_set[str(list[int(row[frame_id]), int(row[object_id])])]
+        rmse_result[id_map[row[frame_id]]] += ((float(origin_data[position_x]) - (float(row[position_x]))) *
+                                               ((float(origin_data[position_y])) - (float(row[position_y])))) ** 2
+        num_count[id_map[row[frame_id]]] += 1
 
     for j in range(future_frames):
-        rmse_result[j] = math.sqrt(rmse_result[j]/countn[j])
+        rmse_result[j] = math.sqrt(rmse_result[j]/num_count)
     print(rmse_result)
