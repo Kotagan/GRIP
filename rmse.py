@@ -41,9 +41,8 @@ if __name__ == '__main__':
     test_total_data = np.array(pd.read_csv(test_origin_data, sep=' ', header=None), dtype=np.float64)
     origin_data_set = {}
     for row in test_total_data:
-        origin_data_set[str(list[int(row[frame_id]), row[object_id]])] = row
+        origin_data_set[str(list[int(row[frame_id]), int(row[object_id])])] = row
 
-    predict_data = predict_data.reshape(-1, 6, 5)
     rmse_result = np.array([0.0, 0.0, 0.0, 0.0, 0.0, 0.0])
     num_count = np.array([0.0, 0.0, 0.0, 0.0, 0.0, 0.0])
     id_map = {}
@@ -51,11 +50,14 @@ if __name__ == '__main__':
         if not row[frame_id] in id_map:
             for j in range(6):
                 id_map[row[frame_id] + j] = j
+        if not str(list[int(row[frame_id]), int(row[object_id])]) in origin_data_set:
+            continue
         origin_data = origin_data_set[str(list[int(row[frame_id]), int(row[object_id])])]
         rmse_result[id_map[row[frame_id]]] += ((float(origin_data[position_x]) - (float(row[position_x]))) *
                                                ((float(origin_data[position_y])) - (float(row[position_y])))) ** 2
         num_count[id_map[row[frame_id]]] += 1
 
     for j in range(future_frames):
-        rmse_result[j] = math.sqrt(rmse_result[j]/num_count)
-    print(rmse_result)
+        rmse_result[j] = math.sqrt(rmse_result[j]/num_count[j])
+        print("grip_rmse_" + str(j + 1) + "_frame = " + str(rmse_result[j]))
+
