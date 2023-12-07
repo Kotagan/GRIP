@@ -19,6 +19,7 @@ object_length = 6
 object_width = 7
 object_height = 8
 heading = 9
+speed = 10
 
 
 def compare_which_is_close(former_time, later_time):
@@ -38,8 +39,8 @@ def get_origin_data_list(pra_file_path):
             }
         }
     """
-    frame_list = np.empty(shape=[0, 10])
-    content = np.array(pd.read_csv(pra_file_path, header=None).to_numpy()[:, [1, 0, 2, 20, 21, 22, 52, 54, 56, 50]])
+    frame_list = np.empty(shape=[0, 11])
+
     map_id = {}  # record object id
     pair_list = {}  # record same frame + id
     id_count = 1
@@ -48,19 +49,22 @@ def get_origin_data_list(pra_file_path):
     crs_jgd2011 = CRS.from_epsg(6675)
     converter = Transformer.from_crs(crs_wgs84, crs_jgd2011)
 
-    for row in content:
-        # change object_id(str) to object_id(int)
-        if not (row[object_id] in map_id):
-            map_id[row[object_id]] = id_count
-            id_count += 1
-        row[object_id] = map_id[row[object_id]]
+    for file_path in pra_file_path:
+        content = np.array(
+            pd.read_csv(file_path, header=None).to_numpy()[:, [1, 0, 2, 20, 21, 22, 52, 54, 56, 50, 44]])
+        for row in content:
+            # change object_id(str) to object_id(int)
+            if not (row[object_id] in map_id):
+                map_id[row[object_id]] = id_count
+                id_count += 1
+            row[object_id] = map_id[row[object_id]]
 
-        data_frame_id = int(round(row[frame_id] / 500, 0))
+            data_frame_id = int(round(row[frame_id] / 500, 0))
 
-        # if pair(frame_id, object_id) exist, continue
-        if str(list[int(data_frame_id), int(row[object_id])]) in pair_list and compare_which_is_close(pair_list[list(data_frame_id, row[object_id])][frame_id], row[frame_id]):
-            continue
-        pair_list[str([data_frame_id, row[object_id]])] = row
+            # if pair(frame_id, object_id) exist, continue
+            if str(list[int(data_frame_id), int(row[object_id])]) in pair_list and compare_which_is_close(pair_list[list(data_frame_id, row[object_id])][frame_id], row[frame_id]):
+                continue
+            pair_list[str([data_frame_id, row[object_id]])] = row
 
     for index, key in enumerate(pair_list):
         row = pair_list[key]
@@ -69,12 +73,13 @@ def get_origin_data_list(pra_file_path):
 
         row[position_x], row[position_y] = converter.transform(row[position_x] / 10000000,
                                                                row[position_y] / 10000000)
-        # if row[position_y] <= -9724.29 or row[position_x] <= -79217.14:
-        #     continue
+        if row[position_y] <= -9724.29 or row[position_x] <= -79217.14:
+            continue
 
         row[object_width] = 1.7
         row[object_length] = 4
         row[object_height] = 1.5
+        row[speed] /= 500.0
 
         # data process
         row[heading] = row[heading] / 36000 * math.pi
@@ -87,7 +92,7 @@ def get_origin_data_list(pra_file_path):
         else:
             print('error')
 
-        row = row.reshape(-1, 10)
+        row = row.reshape(-1, 11)
         frame_list = np.concatenate([frame_list, row], 0)
 
     for row in frame_list:
@@ -101,4 +106,4 @@ def get_origin_data_list(pra_file_path):
 if __name__ == '__main__':
     origin_data_file_path = sorted(glob.glob(os.path.join(data_root, '*.csv')))
     print('Generating Origin Data.')
-    get_origin_data_list(origin_data_file_path[0])
+    get_origin_data_list(origin_data_file_path)

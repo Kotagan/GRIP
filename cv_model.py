@@ -1,7 +1,8 @@
 import numpy as np
 import pandas as pd
 import math
-import rmse
+import glob
+import os
 
 data_root = './data/'
 frame_id = 0
@@ -14,6 +15,7 @@ object_length = 6
 object_width = 7
 object_height = 8
 heading = 9
+speed = 10
 
 if __name__ == '__main__':
     cross_data_list = np.array(pd.read_csv("./frame.txt", sep=' '), dtype=np.float64)
