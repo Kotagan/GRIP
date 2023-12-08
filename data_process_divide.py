@@ -31,6 +31,7 @@ def generate_origin_data(file_path):
     """
 
     all_data_list = np.array(pd.read_table(file_path, sep=' ', header=None, index_col=False))
+    all_data_list = all_data_list.take([0, 1, 2, 3, 4, 5, 6, 7, 8, 9], 1)
     data_list = []
     frame_id_set = {}
     num = 0
