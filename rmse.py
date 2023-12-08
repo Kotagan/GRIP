@@ -50,10 +50,12 @@ if __name__ == '__main__':
         if not row[frame_id] in id_map:
             for j in range(6):
                 id_map[row[frame_id] + j] = j
+        if not row[object_type] == 2:
+            continue
         if not str(list[int(row[frame_id]), int(row[object_id])]) in origin_data_set:
             continue
         origin_data = origin_data_set[str(list[int(row[frame_id]), int(row[object_id])])]
-        rmse_result[id_map[row[frame_id]]] += (float(origin_data[position_x]) - (float(row[position_x])))**2 + ((float(origin_data[position_y])) - (float(row[position_y]))) ** 2
+        rmse_result[id_map[row[frame_id]]] += (origin_data[position_x] - row[position_x])**2 + (origin_data[position_y] - row[position_y])**2
         num_count[id_map[row[frame_id]]] += 1
 
     for j in range(future_frames):
