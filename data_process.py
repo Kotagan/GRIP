@@ -65,6 +65,11 @@ def process_data(pra_now_dict, pra_start_ind, pra_end_ind, pra_observed_last):
     # if their distance is less than $neighbor_distance, we regard them are neighbors.
     neighbor_matrix = np.zeros((max_num_object, max_num_object))
     neighbor_matrix[:num_visible_object, :num_visible_object] = (dist_xy < neighbor_distance).astype(int)
+    num_count = 0
+    for row in neighbor_matrix:
+        for i in row:
+            if i == 1:
+                num_count += 1
 
     now_all_object_id = set([val for x in range(pra_start_ind, pra_end_ind) for val in pra_now_dict[x].keys()])
     non_visible_object_id_list = list(now_all_object_id - set(visible_object_id_list))
