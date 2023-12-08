@@ -39,7 +39,6 @@ def get_origin_data_list(pra_file_path):
             }
         }
     """
-    frame_list = np.empty(shape=[0, 11])
 
     map_id = {}  # record object id
     pair_list = {}  # record same frame + id
@@ -66,6 +65,7 @@ def get_origin_data_list(pra_file_path):
                 continue
             pair_list[str([data_frame_id, row[object_id]])] = row
 
+    data_list = []
     for index, key in enumerate(pair_list):
         row = pair_list[key]
         # millisecond → frame(2frame/second)
@@ -92,13 +92,9 @@ def get_origin_data_list(pra_file_path):
         else:
             print('error')
 
-        row = row.reshape(-1, 11)
-        frame_list = np.concatenate([frame_list, row], 0)
+        data_list.append(row)
 
-    for row in frame_list:
-        row[0] -= frame_list[0][0]
-
-    pd.DataFrame(frame_list).to_csv('./data/prediction_train/frame.txt', sep=' ',
+    pd.DataFrame(data_list).to_csv('./data/prediction_train/frame.txt', sep=' ',
                                     index=False, header=False)
     return
 
