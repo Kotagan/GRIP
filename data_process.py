@@ -12,7 +12,7 @@ future_frames = 6  # 3 second * 2 frame/second
 total_frames = history_frames + future_frames
 # xy_range = 120 # max_x_range=121, max_y_range=118
 max_num_object = 120  # maximum number of observed objects is 70
-neighbor_distance = -1  # meter
+neighbor_distance = 10  # meter
 
 # Baidu ApolloScape data format: frame_id, object_id, object_type, position_x, position_y, position_z, object_length,
 # object_width, object_height, heading
@@ -65,11 +65,11 @@ def process_data(pra_now_dict, pra_start_ind, pra_end_ind, pra_observed_last):
     # if their distance is less than $neighbor_distance, we regard them are neighbors.
     neighbor_matrix = np.zeros((max_num_object, max_num_object))
     neighbor_matrix[:num_visible_object, :num_visible_object] = (dist_xy < neighbor_distance).astype(int)
-    num_count = 0
-    for row in neighbor_matrix:
-        for i in row:
-            if i == 1:
-                num_count += 1
+    # num_count = 0
+    # for row in neighbor_matrix:
+    #     for i in row:
+    #         if i == 1:
+    #             num_count += 1
 
     now_all_object_id = set([val for x in range(pra_start_ind, pra_end_ind) for val in pra_now_dict[x].keys()])
     non_visible_object_id_list = list(now_all_object_id - set(visible_object_id_list))
