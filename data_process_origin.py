@@ -44,10 +44,6 @@ def get_origin_data_list(pra_file_path):
     pair_list = {}  # record same frame + id
     id_count = 1
 
-    crs_wgs84 = CRS.from_epsg(4326)
-    crs_jgd2011 = CRS.from_epsg(6675)
-    converter = Transformer.from_crs(crs_wgs84, crs_jgd2011)
-
     for file_path in pra_file_path:
         content = np.array(
             pd.read_csv(file_path, header=None).to_numpy()[:, [1, 0, 2, 20, 21, 22, 52, 54, 56, 50, 44]])

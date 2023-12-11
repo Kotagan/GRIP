@@ -23,13 +23,11 @@ speed = 44
 
 
 def get_origin_data_list(pra_file_path):
-    map_id = {}  # record object id
-
     crs_wgs84 = CRS.from_epsg(4326)
     crs_jgd2011 = CRS.from_epsg(6675)
     converter = Transformer.from_crs(crs_wgs84, crs_jgd2011)
-
     for file_path in pra_file_path:
+        map_id = {}  # record object id
         data_map = {}
         data_list = []
         content = np.array(pd.read_csv(file_path, header=None).to_numpy())
