@@ -74,7 +74,6 @@ def get_origin_data_list(pra_file_path):
         row[object_height] = 1.5
 
         # data process
-        row[heading] = row[heading] / 36000 * math.pi
         if row[object_type] == 1:
             row[object_type] = 2
         elif row[object_type] == 2:

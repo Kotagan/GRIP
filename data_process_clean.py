@@ -1,4 +1,5 @@
 import math
+import re
 
 import numpy as np
 import glob
@@ -37,6 +38,7 @@ def get_origin_data_list(pra_file_path):
             row[position_x], row[position_y] = row[position_y], row[position_x]
             if not (row[object_id] in map_id):
                 map_id[row[object_id]] = row[object_id]
+                row[heading] = row[heading] / 36000 * math.pi * 2
                 data_map[row[object_id]] = row
                 data_list.append(row)
                 continue
@@ -44,19 +46,15 @@ def get_origin_data_list(pra_file_path):
             data_map[row[object_id]] = row
             if str(row) == str(former_data):
                 continue
-
-            if former_data[position_x] == former_data[position_x]:
-                row[heading] = math.pi / 2
-                if former_data[position_y] > row[position_y]:
-                    row[heading] = -row[heading]
-            else:
-                row[heading] = math.atan((former_data[position_y] - row[position_y]) /
-                                         (former_data[position_x] - former_data[position_x]))
+            row[heading] = math.atan2(former_data[position_y] - row[position_y],
+                                      former_data[position_x] - row[position_x])
+            if row[heading] < 0:
+                row[heading] += 2 * math.pi
             if row[time_frame] - former_data[time_frame] == 0:
                 row[speed] = 0
             else:
                 row[speed] = (math.sqrt((former_data[position_y] - row[position_y])**2 +
-                                        (former_data[position_x] - former_data[position_x])**2) /
+                                        (former_data[position_x] - row[position_x])**2) /
                               ((row[time_frame] - former_data[time_frame]) / 1000))
             data_map[map_id[row[object_id]]] = row
             data_list.append(row)
