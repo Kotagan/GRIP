@@ -66,8 +66,8 @@ def get_origin_data_list(pra_file_path):
         row = pair_list[key]
         # millisecond → frame(2frame/second)
         row[frame_id] = int(round(int(row[frame_id]) / 500))
-        if row[position_x] <= -9724.29 or row[position_y] <= -79217.14:
-            continue
+        # if row[position_x] <= -9724.29 or row[position_y] <= -79217.14:
+        #     continue
 
         row[object_width] = 1.7
         row[object_length] = 4
