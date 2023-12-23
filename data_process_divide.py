@@ -51,6 +51,6 @@ def generate_origin_data(file_path):
 
 
 if __name__ == '__main__':
-    data_file_path = os.path.join(data_root, 'frame.txt')
+    data_file_path = os.path.join(data_root, 'frame_02-10_test.txt')
     print('Dividing Data.')
     generate_origin_data(data_file_path)

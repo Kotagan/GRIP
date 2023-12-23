@@ -31,9 +31,8 @@ max_x = 1.
 max_y = 1.
 history_frames = 6  # 3 second * 2 frame/second
 future_frames = 6  # 3 second * 2 frame/second
-
-batch_size_train = 64
 batch_size_val = 32
+batch_size_train = 64
 batch_size_test = 1
 total_epoch = 50
 base_lr = 0.01
@@ -370,7 +369,7 @@ if __name__ == '__main__':
     model.to(dev)
 
     # train and evaluate model
-    # run_trainval(model, pra_traindata_path='./train_data.pkl', pra_testdata_path='./test_data.pkl')
+    run_trainval(model, pra_traindata_path='./train_data.pkl', pra_testdata_path='./test_data.pkl')
 
     pretrained_model_path = './trained_models/model_epoch_0049.pt'
     model = my_load_model(model, pretrained_model_path)

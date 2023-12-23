@@ -30,13 +30,11 @@ CUDA_VISIBLE_DEVICES = '0'
 os.environ["CUDA_VISIBLE_DEVICES"] = CUDA_VISIBLE_DEVICES
 dev = 'cuda:0'
 
-max_x = 1.
-max_y = 1.
 history_frames = 6  # 3 second * 2 frame/second
 future_frames = 6  # 3 second * 2 frame/second
 
 prediction_data_root = 'prediction_result/'
-test_origin_data = 'data/frame_test_total.txt'
+test_origin_data = 'data/frame_02-10_all.txt'
 
 
 if __name__ == '__main__':
@@ -74,14 +72,20 @@ if __name__ == '__main__':
 
         rmse_result_list.append(rmse_result)
 
-    l1 = plt.plot(rmse_result_list[0], time_label, 'r--', label='type1')
-    # l2 = plt.plot(x2, time_label, 'g--', label='type2')
-    # l3 = plt.plot(x3, time_label, 'b--', label='type3')
+    l1 = plt.plot(rmse_result_list[0], time_label, 'r+-', label='0')
+    l2 = plt.plot(rmse_result_list[1], time_label, 'g+-', label='5')
+    l3 = plt.plot(rmse_result_list[2], time_label, 'b^-', label='10')
+    l4 = plt.plot(rmse_result_list[3], time_label, 'b--', label='15')
+    l5 = plt.plot(rmse_result_list[4], time_label, 'r--', label='20')
     plt.plot(rmse_result_list[0], time_label)
-    # plt.plot(x1, y1, 'ro-', x2, y2, 'g+-', x3, y3, 'b^-')
+    plt.plot(rmse_result_list[0][0], rmse_result_list[0][1], 'r+-',
+             rmse_result_list[1][0], rmse_result_list[1][1], 'g+-',
+             rmse_result_list[2][0], rmse_result_list[2][1], 'b^-',
+             rmse_result_list[3][0], rmse_result_list[3][1], 'b--',
+             rmse_result_list[4][0], rmse_result_list[4][1], 'r--')
     plt.title('The Rmse in each Epoch')
-    plt.xlabel('row')
-    plt.ylabel('column')
+    plt.xlabel('time step')
+    plt.ylabel('RMSE')
     plt.legend()
     plt.show()
 

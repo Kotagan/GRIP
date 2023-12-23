@@ -18,8 +18,8 @@ heading = 9
 speed = 10
 
 if __name__ == '__main__':
-    cross_data_list = np.array(pd.read_csv("./frame_cross_data.txt", sep=' '), dtype=np.float64)
-    all_data_list = np.array(pd.read_csv("./frame_total_data.txt", sep=' '), dtype=np.float64)
+    cross_data_list = np.array(pd.read_csv("data/frame_cross_data_11-13.txt", sep=' '), dtype=np.float64)
+    all_data_list = np.array(pd.read_csv("data/frame_total_data_11-13.txt", sep=' '), dtype=np.float64)
     dict_x = {}
     for row in all_data_list:
         dict_x[str(list[int(row[frame_id]), int(row[object_id])])] = row
