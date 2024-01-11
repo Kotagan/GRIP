@@ -34,7 +34,7 @@ future_frames = 6  # 3 second * 2 frame/second
 batch_size_val = 32
 batch_size_train = 64
 batch_size_test = 1
-total_epoch = 50
+total_epoch = 200
 base_lr = 0.01
 lr_decay_epoch = 5
 dev = 'cuda:0'
@@ -339,7 +339,7 @@ def run_trainval(pra_model, pra_traindata_path, pra_testdata_path):
                              train_val_test='val')
 
     optimizer = optim.Adam(
-        [{'params': model.parameters()}, ], )  # lr = 0.0001)
+        [{'params': model.parameters()}, ], lr=0.005)  # lr = 0.0001)
 
     for now_epoch in range(total_epoch):
         all_loader_train = itertools.chain(loader_train, loader_test)
@@ -371,6 +371,7 @@ if __name__ == '__main__':
     # train and evaluate model
     run_trainval(model, pra_traindata_path='./train_data.pkl', pra_testdata_path='./test_data.pkl')
 
-    pretrained_model_path = './trained_models/model_epoch_0049.pt'
-    model = my_load_model(model, pretrained_model_path)
-    run_test(model, './test_data.pkl')
+    # pretrained_model_path = './trained_models/model_epoch_0007.pt'
+    # pretrained_model_path = './trained_models_lr=0.01/model_epoch_0007.pt'
+    # model = my_load_model(model, pretrained_model_path)
+    # run_test(model, './test_data.pkl')

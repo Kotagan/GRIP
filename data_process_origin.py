@@ -37,36 +37,41 @@ def get_origin_data_list(pra_file_path):
     pair_list = {}  # record same frame + id
     id_count = 1
 
+    data_list = []
     for file_path in pra_file_path:
         content = np.array(
-            pd.read_csv(file_path, header=1).to_numpy()[:, [10, 15, 0, 1, 0, 1, 1, 1, 1, 19, 18]])
+            pd.read_csv(file_path, header=0).to_numpy()).take([16, 15, 0, 0, 1, 0, 0, 0, 0, 4, 2], 1)
+        sorted(content, key=lambda x: x[0])
         for row in content:
             # change object_id(str) to object_id(int)
             if not (row[object_id] in map_id):
                 map_id[row[object_id]] = id_count
                 id_count += 1
+            if list[row[frame_id], row[object_id]] in pair_list:
+                continue
+            pair_list[list[row[frame_id], row[object_id]]] = {}
             row[object_id] = map_id[row[object_id]]
             if row[frame_id] % 5 != 0:
                 continue
             row[frame_id] = int(row[frame_id] / 5)
             # if pair(frame_id, object_id) exist, continue
-            pair_list[str([row[frame_id], row[object_id]])] = row
+            data_list.append(row)
 
-    data_list = []
-    for index, key in enumerate(pair_list):
-        row = pair_list[key]
+    for row in data_list:
         # if row[position_x] <= -9724.29 or row[position_y] <= -79217.14:
         #     continue
-
         row[object_width] = 1.7
         row[object_length] = 4
         row[object_height] = 1.5
         row[object_type] = 1
         row[position_z] = 0
+        if row[heading] <= 180:
+            row[heading] = row[heading] / 180 * math.pi
+        else:
+            row[heading] = (row[heading] - 360) / 180 * math.pi
         # data process
 
-        data_list.append(row)
-
+    data_list.sort(key=lambda x: x[0])
     pd.DataFrame(data_list).to_csv('./data/prediction_train/frame.txt', sep=' ',
                                    index=False, header=False)
     return

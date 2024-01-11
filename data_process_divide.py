@@ -6,7 +6,8 @@ from pyproj import CRS
 from pyproj import Transformer
 
 # Please change this to your location
-data_root = './data/prediction_train/'
+data_train_root = './data/prediction_train/'
+data_test_root = './data/prediction_test/'
 frame_id = 0
 object_id = 1
 object_type = 2
@@ -19,7 +20,7 @@ object_height = 8
 heading = 9
 
 
-def generate_origin_data(file_path):
+def generate_origin_data(file_path, data_root):
     """
     Read data from $pra_file_path, and split data into clips with $total_frames length.
     Return: feature and adjacency_matrix
@@ -36,21 +37,32 @@ def generate_origin_data(file_path):
     frame_id_set = {}
     num = 0
     for row in all_data_list:
-        if not (int(row[0]) - 1 in frame_id_set
-                or int(row[0]) in frame_id_set
-                or len(data_list) == 0):
-            if data_list[len(data_list) - 1][0] - data_list[0][0] < 12:
+        if not (len(data_list) == 0 or int(row[0]) - 1 in frame_id_set or int(row[0]) in frame_id_set):
+            # reset_frame_id = data_list[0][frame_id]
+            # for data in data_list:
+            #     data[frame_id] -= reset_frame_id
+            # data_list.sort(key=lambda x: x[frame_id])
+            while len(data_list) != 0 and data_list[0][frame_id] % 12 != 1:
+                data_list = data_list[1:].copy()
+            while len(data_list) != 0 and data_list[len(data_list)-1][frame_id] % 12 != 0:
+                data_list = data_list[:-1].copy()
+
+            if len(data_list) != 0:
+                pd.DataFrame(data_list).to_csv(data_root + str(num) + '.txt', sep=' ', index=False, header=False)
                 data_list = []
-            else:
-                pd.DataFrame(data_list).to_csv('./data/prediction_train/' + str(num) + '.txt', sep=' ', index=False, header=False)
-                data_list = []
+                frame_id_set = {}
                 num += 1
         data_list.append(row)
         frame_id_set[int(row[0])] = 0
-    pd.DataFrame(data_list).to_csv('./data/prediction_train/' + str(num) + '.txt', sep=' ', index=False, header=False)
+        if row[0] == 1245536724.0:
+            continue
+    pd.DataFrame(data_list).to_csv(data_root + str(num) + '.txt', sep=' ', index=False, header=False)
 
 
 if __name__ == '__main__':
-    data_file_path = os.path.join(data_root, 'frame_02-10_test.txt')
-    print('Dividing Data.')
-    generate_origin_data(data_file_path)
+    data_file_path = os.path.join(data_train_root, 'frame.txt')
+    print('Dividing Train Data.')
+    generate_origin_data(data_file_path, data_train_root)
+    data_file_path = os.path.join(data_test_root, 'frame.txt')
+    print('Dividing Test Data.')
+    generate_origin_data(data_file_path, data_test_root)

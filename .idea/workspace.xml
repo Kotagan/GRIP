@@ -6,11 +6,15 @@
   <component name="ChangeListManager">
     <list default="true" id="73ef261f-cb68-481e-8d14-3ae2a76a1c1f" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/cv_model.py" beforeDir="false" afterPath="$PROJECT_DIR$/cv_model.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/data/6656.qgz" beforeDir="false" afterPath="$PROJECT_DIR$/data/6656.qgz" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/data_process.py" beforeDir="false" afterPath="$PROJECT_DIR$/data_process.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/data_process_clean.py" beforeDir="false" afterPath="$PROJECT_DIR$/data_process_clean.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/data_process_divide.py" beforeDir="false" afterPath="$PROJECT_DIR$/data_process_divide.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/data_process_origin.py" beforeDir="false" afterPath="$PROJECT_DIR$/data_process_origin.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lstm.py" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/main.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/rmse.py" beforeDir="false" afterPath="$PROJECT_DIR$/rmse.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/training_log.txt" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -32,13 +36,28 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;clear&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "Python.cv_model.executor": "Run",
+    "Python.data_process.executor": "Run",
+    "Python.data_process_clean.executor": "Run",
+    "Python.data_process_divide.executor": "Run",
+    "Python.data_process_origin.executor": "Run",
+    "Python.lstm.executor": "Run",
+    "Python.main.executor": "Run",
+    "Python.rmse.executor": "Run",
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "git-widget-placeholder": "clear"
   }
-}</component>
+}]]></component>
+  <component name="SharedIndexes">
+    <attachedChunks>
+      <set>
+        <option value="bundled-python-sdk-50da183f06c8-d3b881c8e49f-com.jetbrains.pycharm.community.sharedIndexes.bundled-PC-233.13135.95" />
+      </set>
+    </attachedChunks>
+  </component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
@@ -54,11 +73,36 @@
     <breakpoint-manager>
       <breakpoints>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/data_process_clean.py</url>
+          <line>48</line>
+          <option name="timeStamp" value="10" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/rmse.py</url>
-          <line>41</line>
-          <option name="timeStamp" value="1" />
+          <line>72</line>
+          <option name="timeStamp" value="16" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/cv_model.py</url>
+          <line>39</line>
+          <option name="timeStamp" value="27" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/data_process_origin.py</url>
+          <line>51</line>
+          <option name="timeStamp" value="49" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/data_process_origin.py</url>
+          <line>50</line>
+          <option name="timeStamp" value="50" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>
+    <watches-manager>
+      <configuration name="PythonConfigurationType">
+        <watch expression="row" />
+      </configuration>
+    </watches-manager>
   </component>
 </project>

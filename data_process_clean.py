@@ -9,57 +9,67 @@ from pyproj import CRS
 from pyproj import Transformer
 
 # Please change this to your location
-data_root = './data/'
-time_frame = 1
-object_id = 0
-object_type = 2
-position_x = 20
-position_y = 21
-position_z = 22
-object_length = 52
-object_width = 54
-object_height = 56
-heading = 50
-speed = 44
+data_root = './data'
+
+time_frame = 16
+object_id = 15
+object_type = 0
+position_x = 1
+position_y = 0
+position_z = 1
+object_length = 1
+object_width = 1
+object_height = 1
+heading = 4
+speed = 2
 
 
 def get_origin_data_list(pra_file_path):
-    crs_wgs84 = CRS.from_epsg(4326)
-    crs_jgd2011 = CRS.from_epsg(6675)
-    converter = Transformer.from_crs(crs_wgs84, crs_jgd2011)
     for file_path in pra_file_path:
         map_id = {}  # record object id
         data_map = {}
         data_list = []
-        content = np.array(pd.read_csv(file_path, header=None).to_numpy())
+        content = np.array(pd.read_csv(file_path, dtype={'smooth_x': np.float64,
+                                                         'smooth_y': np.float64,
+                                                         'smooth_v': np.float64,
+                                                         'diff_v': np.float64,
+                                                         'smooth_h': np.float64,
+                                                         'diff_h': np.float64,
+                                                         'smooth_a': np.float64,
+                                                         'diff_a': np.float64,
+                                                         'timestep': np.float64,
+                                                         'ori': np.float64,
+                                                         'id': object,
+                                                         }).to_numpy())
+
         for row in content:
-            row[position_x], row[position_y] = converter.transform(row[position_x] / 10000000,
-                                                                   row[position_y] / 10000000)
             row[position_x], row[position_y] = row[position_y], row[position_x]
+            row[time_frame] = round(row[time_frame] / 100)
+            # print(row[time_frame])
             if not (row[object_id] in map_id):
                 map_id[row[object_id]] = row[object_id]
-                row[heading] = row[heading] / 36000 * math.pi * 2
                 data_map[row[object_id]] = row
                 data_list.append(row)
                 continue
-            former_data = data_map[row[object_id]]
-            data_map[row[object_id]] = row
-            if str(row) == str(former_data):
-                continue
-            row[heading] = math.atan2(former_data[position_y] - row[position_y],
-                                      former_data[position_x] - row[position_x])
-            if row[heading] < 0:
-                row[heading] += 2 * math.pi
-            if row[time_frame] - former_data[time_frame] == 0:
-                row[speed] = 0
-            else:
-                row[speed] = (math.sqrt((former_data[position_y] - row[position_y])**2 +
-                                        (former_data[position_x] - row[position_x])**2) /
-                              ((row[time_frame] - former_data[time_frame]) / 1000))
-            data_map[map_id[row[object_id]]] = row
-            data_list.append(row)
 
-        pd.DataFrame(data_list).to_csv(file_path, sep=',', index=False, header=False)
+            former_data = data_map[row[object_id]]
+            if former_data[time_frame] == row[time_frame] - 1:
+                data_map[row[object_id]] = row
+                data_list.append(row)
+                continue
+
+            mid_data = row.copy()
+
+            for k in range(len(mid_data)):
+                if not isinstance(mid_data[k], str):
+                    mid_data[k] = (former_data[k] + row[k]) / 2
+
+            data_list.append(mid_data)
+            data_list.append(row)
+            data_map[row[object_id]] = row
+
+        file_path = file_path[:-4] + "_new.csv"
+        pd.DataFrame(data_list).to_csv(file_path, sep=',', index=False, header=True)
 
     return
 

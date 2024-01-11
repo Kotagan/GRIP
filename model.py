@@ -40,10 +40,9 @@ class Model(nn.Module):
 
 		self.num_node = num_node = self.graph.num_node
 		self.out_dim_per_node = out_dim_per_node = 2 #(x, y) coordinate
-		self.seq2seq_car = Seq2Seq(input_size=(64), hidden_size=out_dim_per_node, num_layers=2, dropout=0.5, isCuda=True)
-		self.seq2seq_human = Seq2Seq(input_size=(64), hidden_size=out_dim_per_node, num_layers=2, dropout=0.5, isCuda=True)
-		self.seq2seq_bike = Seq2Seq(input_size=(64), hidden_size=out_dim_per_node, num_layers=2, dropout=0.5, isCuda=True)
-
+		self.seq2seq_car = Seq2Seq(input_size=64, hidden_size=out_dim_per_node, num_layers=2, dropout=0.5, isCuda=True)
+		self.seq2seq_human = Seq2Seq(input_size=64, hidden_size=out_dim_per_node, num_layers=2, dropout=0.5, isCuda=True)
+		self.seq2seq_bike = Seq2Seq(input_size=64, hidden_size=out_dim_per_node, num_layers=2, dropout=0.5, isCuda=True)
 
 	def reshape_for_lstm(self, feature):
 		# prepare for skeleton prediction model
