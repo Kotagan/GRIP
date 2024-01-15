@@ -42,10 +42,10 @@ def generate_origin_data(file_path, data_root):
             # for data in data_list:
             #     data[frame_id] -= reset_frame_id
             # data_list.sort(key=lambda x: x[frame_id])
-            while len(data_list) != 0 and data_list[0][frame_id] % 12 != 1:
-                data_list = data_list[1:].copy()
-            while len(data_list) != 0 and data_list[len(data_list)-1][frame_id] % 12 != 0:
-                data_list = data_list[:-1].copy()
+            # while len(data_list) != 0 and data_list[0][frame_id] % 12 != 1:
+            #     data_list = data_list[1:].copy()
+            # while len(data_list) != 0 and data_list[len(data_list)-1][frame_id] % 12 != 0:
+            #     data_list = data_list[:-1].copy()
 
             if len(data_list) != 0:
                 pd.DataFrame(data_list).to_csv(data_root + str(num) + '.txt', sep=' ', index=False, header=False)
@@ -54,8 +54,6 @@ def generate_origin_data(file_path, data_root):
                 num += 1
         data_list.append(row)
         frame_id_set[int(row[0])] = 0
-        if row[0] == 1245536724.0:
-            continue
     pd.DataFrame(data_list).to_csv(data_root + str(num) + '.txt', sep=' ', index=False, header=False)
 
 

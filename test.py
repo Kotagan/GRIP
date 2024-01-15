@@ -40,7 +40,7 @@ lr_decay_epoch = 5
 dev = 'cuda:0'
 work_dir = './trained_models'
 log_file = os.path.join(work_dir, 'log_test.txt')
-test_result_file = 'prediction_result.txt'
+test_result_file = 'prediction_result_'
 
 criterion = torch.nn.SmoothL1Loss()
 
@@ -272,7 +272,7 @@ def val_model(pra_model, pra_data_loader):
     return all_overall_sum_list, all_overall_num_list
 
 
-def test_model(pra_model, pra_data_loader):
+def test_model(pra_model, pra_data_loader, index):
     # pra_model.to(dev)
     pra_model.eval()
     rescale_xy = torch.ones((1, 2, 1, 1)).to(dev)
@@ -280,7 +280,8 @@ def test_model(pra_model, pra_data_loader):
     rescale_xy[:, 1] = max_y
     all_overall_sum_list = []
     all_overall_num_list = []
-    with open(test_result_file, 'w') as writer:
+    result_file = test_result_file + str(index).rjust(2, '0') + '.txt'
+    with open(result_file, 'w') as writer:
         # train model using training data
         for iteration, (ori_data, A, mean_xy) in enumerate(pra_data_loader):
             # data: (N, C, T, V)
@@ -357,21 +358,20 @@ def run_trainval(pra_model, pra_traindata_path, pra_testdata_path):
         )
 
 
-def run_test(pra_model, pra_data_path):
+def run_test(pra_model, pra_data_path, i):
     loader_test = data_loader(pra_data_path, pra_batch_size=batch_size_test, pra_shuffle=False, pra_drop_last=False,
                               train_val_test='test')
-    test_model(pra_model, loader_test)
+    test_model(pra_model, loader_test, i)
 
 
 if __name__ == '__main__':
     graph_args = {'max_hop': 2, 'num_node': 120}
     model = Model(in_channels=4, graph_args=graph_args, edge_importance_weighting=True)
     model.to(dev)
-
-    # train and evaluate model
-    run_trainval(model, pra_traindata_path='./train_data.pkl', pra_testdata_path='./test_data.pkl')
-
-    # pretrained_model_path = './trained_models/model_epoch_0007.pt'
+    model_path = './trained_models/model_epoch_00'
+    for i in range(0, 50):
+        pretrained_model_path = model_path + str(i).rjust(2,'0') + '.pt'
+        model = my_load_model(model, pretrained_model_path)
+        run_test(model, './test_data.pkl', i)
     # pretrained_model_path = './trained_models_lr=0.01/model_epoch_0007.pt'
-    # model = my_load_model(model, pretrained_model_path)
-    # run_test(model, './test_data.pkl')
+

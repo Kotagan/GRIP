@@ -33,18 +33,18 @@ dev = 'cuda:0'
 history_frames = 6  # 3 second * 2 frame/second
 future_frames = 6  # 3 second * 2 frame/second
 
-prediction_data_root = ''
-test_origin_data = 'data/frame1002-1006.txt'
+prediction_data_root = 'prediction_result/'
+test_origin_data = 'data/frame1016-1110.txt'
 
 
 if __name__ == '__main__':
-    prediction_data_file_path = sorted(glob.glob(os.path.join(prediction_data_root, 'prediction_result.txt')))
+    prediction_data_file_path = sorted(glob.glob(os.path.join(prediction_data_root, '*.txt')))
     print('Prepare Prediction Data.')
     time_label = [0.5, 1, 1.5, 2, 2.5, 3]
     rmse_result_list = []
     for file_path in prediction_data_file_path:
         # re.findall(r'(\w+)(\d+)(\w+)', file_path)
-        file_path = 'prediction_result.txt'
+        print(file_path)
         predict_data = np.array(pd.read_csv(file_path, sep=' ', header=None), dtype=np.float64)
 
         test_total_data = np.array(pd.read_csv(test_origin_data, sep=' ', header=None), dtype=np.float64)
@@ -61,6 +61,9 @@ if __name__ == '__main__':
                     id_map[row[frame_id] + j] = j
             if not str(list[int(row[frame_id]), int(row[object_id])]) in origin_data_set:
                 continue
+            # if ((row[position_x] <= -9693 or row[position_y]) <= -78926 and
+            #         (row[position_x] >= -9724.29 or row[position_y] >= -79217.14)):
+            #     continue
             origin_data = origin_data_set[str(list[int(row[frame_id]), int(row[object_id])])]
             rmse_result[id_map[row[frame_id]]] += ((origin_data[position_x] - row[position_x])**2 +
                                                    (origin_data[position_y] - row[position_y])**2)
